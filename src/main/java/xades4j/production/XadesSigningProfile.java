@@ -18,6 +18,7 @@ package xades4j.production;
 
 import com.google.inject.Module;
 import xades4j.properties.QualifyingProperty;
+import xades4j.providers.ElementIdProvider;
 import xades4j.utils.XadesProfileCore;
 import xades4j.utils.XadesProfileResolutionException;
 import xades4j.providers.AlgorithmsProvider;
@@ -280,6 +281,11 @@ public abstract class XadesSigningProfile
     {
         return withBinding(UnsignedPropertiesMarshaller.class, uPropsMarshallerClass);
     }
+    public XadesSigningProfile withElementIdProvider(
+            ElementIdProvider elementIdProvider)
+    {
+        return withBinding(ElementIdProvider.class, elementIdProvider);
+    }
 
     /*******************************************/
     /****** Custom data object generation ******/
@@ -299,4 +305,6 @@ public abstract class XadesSigningProfile
         this.profileCore.addGenericBinding(PropertyDataObjectGenerator.class, propDataGenClass, propClass);
         return this;
     }
+
+
 }

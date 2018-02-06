@@ -53,6 +53,7 @@ import xades4j.properties.data.SigAndDataObjsPropertiesData;
 import xades4j.providers.AlgorithmsProviderEx;
 import xades4j.providers.BasicSignatureOptionsProvider;
 import xades4j.providers.DataObjectPropertiesProvider;
+import xades4j.providers.ElementIdProvider;
 import xades4j.providers.KeyingDataProvider;
 import xades4j.providers.SignaturePropertiesProvider;
 import xades4j.providers.SigningCertChainException;
@@ -87,6 +88,7 @@ class SignerBES implements XadesSigner {
     /**/
     private final KeyInfoBuilder keyInfoBuilder;
     private final QualifyingPropertiesProcessor qualifPropsProcessor;
+    private final ElementIdProvider elementIdProvider;
 
     @Inject
     protected SignerBES(
@@ -99,11 +101,11 @@ class SignerBES implements XadesSigner {
             PropertiesDataObjectsGenerator propsDataObjectsGenerator,
             SignedPropertiesMarshaller signedPropsMarshaller,
             UnsignedPropertiesMarshaller unsignedPropsMarshaller,
-            AlgorithmsParametersMarshallingProvider algorithmsParametersMarshaller) {
+            AlgorithmsParametersMarshallingProvider algorithmsParametersMarshaller, ElementIdProvider elementIdProvider) {
         if (ObjectUtils.anyNull(
                 keyingProvider, algorithmsProvider,
                 signaturePropsProvider, dataObjPropsProvider, propsDataObjectsGenerator,
-                signedPropsMarshaller, unsignedPropsMarshaller, algorithmsParametersMarshaller)) {
+                signedPropsMarshaller, unsignedPropsMarshaller, algorithmsParametersMarshaller, elementIdProvider)) {
             throw new NullPointerException("One or more arguments are null");
         }
 
@@ -117,6 +119,7 @@ class SignerBES implements XadesSigner {
         this.dataObjectDescsProcessor = dataObjectDescsProcessor;
         this.keyInfoBuilder = new KeyInfoBuilder(basicSignatureOptionsProvider, algorithmsProvider, algorithmsParametersMarshaller);
         this.qualifPropsProcessor = new QualifyingPropertiesProcessor(signaturePropsProvider, dataObjPropsProvider);
+        this.elementIdProvider = elementIdProvider;
     }
 
     @Override
@@ -145,8 +148,9 @@ class SignerBES implements XadesSigner {
         Document signatureDocument = DOMHelper.getOwnerDocument(referenceNode);
 
         // Generate unique identifiers for the Signature and the SignedProperties.
-        String signatureId = String.format("xmldsig-%s", UUID.randomUUID());
-        String signedPropsId = String.format("%s-signedprops", signatureId);
+        String signatureId = elementIdProvider.generateSignatureId();
+        String signedPropsId =elementIdProvider.generateSignedPropsId(signatureId);
+
 
         // Signing certificate chain (may contain only the signing certificate).
         List<X509Certificate> signingCertificateChain = this.keyingProvider.getSigningCertificateChain();
@@ -305,8 +309,8 @@ class SignerBES implements XadesSigner {
         Document signatureDocument = DOMHelper.getOwnerDocument(referenceNode);
 
         // Generate unique identifiers for the Signature and the SignedProperties.
-        String signatureId = String.format("xmldsig-%s", UUID.randomUUID());
-        String signedPropsId = String.format("%s-signedprops", signatureId);
+        String signatureId = elementIdProvider.generateSignatureId();
+        String signedPropsId =elementIdProvider.generateSignedPropsId(signatureId);
 
         // Signing certificate chain (may contain only the signing certificate).
         List<X509Certificate> signingCertificateChain = this.keyingProvider.getSigningCertificateChain();

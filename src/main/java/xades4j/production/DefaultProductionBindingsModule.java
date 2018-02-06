@@ -44,10 +44,12 @@ import xades4j.providers.AlgorithmsProvider;
 import xades4j.providers.AlgorithmsProviderEx;
 import xades4j.providers.BasicSignatureOptionsProvider;
 import xades4j.providers.DataObjectPropertiesProvider;
+import xades4j.providers.ElementIdProvider;
 import xades4j.providers.MessageDigestEngineProvider;
 import xades4j.providers.SignaturePropertiesProvider;
 import xades4j.providers.TimeStampTokenProvider;
 import xades4j.providers.impl.DefaultAlgorithmsProviderEx;
+import xades4j.providers.impl.DefaultElementIdProvider;
 import xades4j.providers.impl.DefaultMessageDigestProvider;
 import xades4j.providers.impl.DefaultSignaturePropertiesProvider;
 import xades4j.providers.impl.DefaultBasicSignatureOptionsProvider;
@@ -87,6 +89,7 @@ class DefaultProductionBindingsModule extends AbstractModule
         // generators may have dependencies.
         bind(PropertiesDataObjectsGenerator.class).to(PropertiesDataObjectsGeneratorImpl.class);
         bind(PropertyDataGeneratorsMapper.class).to(PropertyDataGeneratorsMapperImpl.class);
+        bind(ElementIdProvider.class).to(DefaultElementIdProvider.class);
         // Ensure empty set when no bindings are defined
         Multibinder.newSetBinder(binder(), CustomPropertiesDataObjsStructureVerifier.class);
 
