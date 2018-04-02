@@ -27,7 +27,6 @@ import xades4j.properties.data.CertRef;
 import xades4j.properties.data.PropertyDataObject;
 import xades4j.providers.AlgorithmsProviderEx;
 import xades4j.providers.MessageDigestEngineProvider;
-import xades4j.utils.RfcUtils;
 
 /**
  *
@@ -71,7 +70,7 @@ class DataGenBaseCertRefs
                 byte[] digestValue = messageDigest.digest(cert.getEncoded());
 
                 certRefsData.addCertRef(new CertRef(
-                        RfcUtils.toRfc4514(cert.getIssuerX500Principal()),
+                        cert.getIssuerX500Principal().getName(),
                         cert.getSerialNumber(),
                         digestAlgUri,
                         digestValue));

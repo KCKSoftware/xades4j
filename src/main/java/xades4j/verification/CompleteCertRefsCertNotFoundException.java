@@ -16,8 +16,6 @@
  */
 package xades4j.verification;
 
-import xades4j.utils.RfcUtils;
-
 import java.security.cert.X509Certificate;
 
 /**
@@ -46,6 +44,6 @@ public class CompleteCertRefsCertNotFoundException extends CompleteCertRefsVerif
     @Override
     protected String getVerificationMessage()
     {
-        return "cannot find a reference for certificate " + RfcUtils.toRfc4514(certificate.getSubjectX500Principal());
+        return "cannot find a reference for certificate " + certificate.getSubjectX500Principal().getName();
     }
 }
