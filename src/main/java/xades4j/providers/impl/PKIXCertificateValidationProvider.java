@@ -47,7 +47,6 @@ import xades4j.providers.CannotSelectCertificateException;
 import xades4j.providers.CertificateValidationException;
 import xades4j.providers.CertificateValidationProvider;
 import xades4j.providers.ValidationData;
-import xades4j.utils.RfcUtils;
 import xades4j.verification.UnexpectedJCAException;
 
 /**
@@ -344,7 +343,7 @@ public class PKIXCertificateValidationProvider implements CertificateValidationP
             }
             catch (Exception ex)
             {
-                throw new CertificateValidationException(null, "Invalid CRL signature from " + RfcUtils.toRfc4514(crl.getIssuerX500Principal()), ex);
+                throw new CertificateValidationException(null, "Invalid CRL signature from " + crl.getIssuerX500Principal().getName(), ex);
             }
         }
         return crls;

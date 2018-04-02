@@ -29,7 +29,6 @@ import xades4j.algorithms.Algorithm;
 import xades4j.providers.AlgorithmsProviderEx;
 import xades4j.providers.BasicSignatureOptionsProvider;
 import xades4j.utils.CanonicalizerUtils;
-import xades4j.utils.RfcUtils;
 import xades4j.utils.TransformUtils;
 import xades4j.xml.marshalling.algorithms.AlgorithmsParametersMarshallingProvider;
 
@@ -83,9 +82,8 @@ class KeyInfoBuilder
             {
                 X509Data x509Data = new X509Data(xmlSig.getDocument());
                 x509Data.addCertificate(signingCertificate);
-                //Need to make edits in santuario sources for support national certificates (see xades4j.utils.RfcUtils#toRfc4514())
                 x509Data.addSubjectName(signingCertificate);
-                x509Data.addIssuerSerial(RfcUtils.toRfc4514(signingCertificate.getIssuerX500Principal()), signingCertificate.getSerialNumber());
+                x509Data.addIssuerSerial(signingCertificate.getIssuerX500Principal().getName(), signingCertificate.getSerialNumber());
                 xmlSig.getKeyInfo().add(x509Data);
 
                 if (this.basicSignatureOptionsProvider.signSigningCertificate())
