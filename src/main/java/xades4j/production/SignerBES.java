@@ -100,6 +100,7 @@ class SignerBES implements XadesSigner
             SignedPropertiesMarshaller signedPropsMarshaller,
             UnsignedPropertiesMarshaller unsignedPropsMarshaller,
             AlgorithmsParametersMarshallingProvider algorithmsParametersMarshaller,
+            X500NameStyleProvider x500NameStyleProvider,
             ElementIdProvider elementIdProvider)
     {
         if (ObjectUtils.anyNull(
