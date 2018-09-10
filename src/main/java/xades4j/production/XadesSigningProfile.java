@@ -19,6 +19,7 @@ package xades4j.production;
 import com.google.inject.Module;
 import xades4j.properties.QualifyingProperty;
 import xades4j.providers.ElementIdProvider;
+import xades4j.providers.X500NameStyleProvider;
 import xades4j.utils.XadesProfileCore;
 import xades4j.utils.XadesProfileResolutionException;
 import xades4j.providers.AlgorithmsProvider;
@@ -210,16 +211,54 @@ public abstract class XadesSigningProfile
         return withBinding(MessageDigestEngineProvider.class, digestProviderClass);
     }
 
-        public XadesSigningProfile withBasicSignatureOptionsProvider(
+    public XadesSigningProfile withX500NameStyleProvider(
+            X500NameStyleProvider x500NameStyleProvider)
+    {
+        return withBinding(X500NameStyleProvider.class, x500NameStyleProvider);
+    }
+
+    public XadesSigningProfile withX500NameStyleProvider(
+            Class<? extends X500NameStyleProvider> x500NameStyleProviderClass)
+    {
+        return withBinding(X500NameStyleProvider.class, x500NameStyleProviderClass);
+    }
+
+    /**
+     * @deprecated
+     * <p>
+     * This method is deprecated and might be removed on future versions. Classes
+     * registered using this method will be adapted to the new {@link BasicSignatureOptions}
+     * class. If a {@BasicSignatureOptions} instance is registered it will override
+     * any registered {@link BasicSignatureOptionsProvider}.
+     *
+     * @see #withBasicSignatureOptions(BasicSignatureOptions)
+     */
+    public XadesSigningProfile withBasicSignatureOptionsProvider(
             BasicSignatureOptionsProvider optionsProvider)
     {
         return withBinding(BasicSignatureOptionsProvider.class, optionsProvider);
     }
 
+    /**
+     * @deprecated
+     * <p>
+     * This method is deprecated and might be removed on future versions. Classes
+     * registered using this method will be adapted to the new {@link BasicSignatureOptions}
+     * class. If a {@BasicSignatureOptions} instance is registered it will override
+     * any registered {@link BasicSignatureOptionsProvider}.
+     *
+     * @see #withBasicSignatureOptions(BasicSignatureOptions)
+     */
     public XadesSigningProfile withBasicSignatureOptionsProvider(
             Class<? extends BasicSignatureOptionsProvider> optionsProvider)
     {
         return withBinding(BasicSignatureOptionsProvider.class, optionsProvider);
+    }
+
+    public XadesSigningProfile withBasicSignatureOptions(
+            BasicSignatureOptions options)
+    {
+        return withBinding(BasicSignatureOptions.class, options);
     }
 
     public XadesSigningProfile withSignaturePropertiesProvider(
@@ -305,6 +344,4 @@ public abstract class XadesSigningProfile
         this.profileCore.addGenericBinding(PropertyDataObjectGenerator.class, propDataGenClass, propClass);
         return this;
     }
-
-
 }
